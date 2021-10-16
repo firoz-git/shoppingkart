@@ -1,0 +1,34 @@
+<section>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <form
+          action="/admin/add-product"
+          enctype="multipart/form-data"
+          method="POST"
+        >
+          <!--ivde image db send akkanm athinan enctype-->
+
+          <label for="">Name</label>
+          <input type="text" class="form-control" name="name"/>
+
+          <label for="">Category</label>
+          <input type="text" class="form-control" name="category"/>
+
+          <label for="">Price</label>
+          <input type="text" class="form-control" name="price" />
+
+          <label for="">Description</label>
+          <input type="text" class="form-control" name="description" />
+
+          <label for="">Image</label>
+          <input type="file" class="form-control-file" name="image"/>
+
+          <button type="submit" class="btn btn-primary mt-5">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<
