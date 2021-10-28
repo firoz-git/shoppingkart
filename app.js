@@ -11,7 +11,6 @@ var app = express();
 var db=require('./config/connection');
 
 
-
 const { doesNotMatch } = require('assert');
 
 //var jsonParser = bodyParser.json();
@@ -31,6 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(fileUpload());
 db.connect((err)=>{
     if(err) console.log('error occured'+err);
