@@ -9,7 +9,7 @@ module.exports={
         return new Promise(async (resolve,reject)=>{
             userData.password=await bcrypt.hash(userData.password,10)
             db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response)=>{
-                
+                resolve(response)
             })
         })
     }
