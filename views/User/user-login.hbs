@@ -35,9 +35,14 @@
 </style>
 </head>
 <body>
+
 <div class="login-form">
     <form action="/login" method="post">
-        <h2 class="text-center">Log in</h2>       
+        <h2 class="text-center">Log in</h2>  
+        {{#if loginErr}}
+            <p>{{loginErr}}</p>
+        {{/if}}
+     
         <div class="form-group">
             <input type="email" class="form-control" name="email" placeholder="Email" required="required">
         </div>

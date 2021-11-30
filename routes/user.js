@@ -4,7 +4,13 @@ const { resolve } = require("promise");
 const productHelpers = require("../data-insertion/product-helpers");
 const userHelpers = require("../data-insertion/user-helpers");
 var router = express.Router();
-
+const verifylogin=(req,res,next)=>{
+  if(req.session.loggedIn){
+    next()
+  }else{
+    res.redirect('/') //it helps to reduve checking each route operations by just call this verifylogin
+  }
+}
 /* GET home page. */
 router.get("/", function (req, res, next) {
   let user=req.session.user  //user data taken for session related oprations in the homepage
@@ -16,7 +22,13 @@ router.get("/", function (req, res, next) {
   
 });
 router.get('/login',function(req,res){
-  res.render("User/user-login")
+  if(req.session.loggedIn){
+    res.redirect('/')
+  }else{
+
+    res.render("User/user-login", {"loginErr":req.session.loginErr})
+    req.session.loginErr=false  //false illenki refresh akkumbolum eror msg kanum
+  }
 })
 
 router.get('/signup',function(req,res){
@@ -31,7 +43,7 @@ router.post('/signup', function(req,res){
   })
   })
 router.post('/login',function(req,res){
-  // console.log(req.body);
+  
   userHelpers.doLogin(req.body).then((response)=>{
     console.log(response); //here we can see the user and status inside of response in the form of object
     if(response.status){
@@ -40,11 +52,18 @@ router.post('/login',function(req,res){
       req.session.user=response.user //responseil ulla user data store to user of session
       console.log(req.session.user);
       res.redirect('/') //already root to home page set cheythath kond just redirect cheyyam to that location
-    }else{
-      res.render("User/user-login")
+    }else{  //password or username failed elae will invoke
+      req.session.loginErr="Incorrect Email or Password" //or ivde true koduth if of hbs il check cheyth true vine . ennit avde <p> yil msg kodukkam
+      res.redirect('/login')
     }
   })
   
 })
-
+router.get('/logout', function(req,res){
+  req.session.destroy()
+  res.redirect('/')
+})
+router.get('/cart',verifylogin,(req,res)=>{
+  res.render("User/cart")
+})
 module.exports = router;
