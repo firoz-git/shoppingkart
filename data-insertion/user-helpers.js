@@ -16,17 +16,22 @@ module.exports={
     doLogin:(loginData)=>{
         return new Promise(async (resolve,reject)=>{
             let loginStatus=false
-            let response={}
-            let user=await db.get().collection(collection.USER_COLLECTION).findOne({Email:loginData.Email})
-            console.log(loginData);
+            let response={} //response object akki ithilekkan user and status store avum like object format
+            let user=await db.get().collection(collection.USER_COLLECTION).findOne({email:loginData.email})
+            // console.log(user);
             if(user){
                 bcrypt.compare(loginData.password,user.password).then((status)=>{
                     if(status){
-                        console.log("login success");
+                        response.user=user //response objectinte inside an user ullath wit status true
+                        response.status=true
+                        resolve(response) //send the response to dologin function
                     }else{
-                        console.log("login failed");
+                        resolve({status:false})
                     }
                 })
+            }else{
+                console.log('login failed');
+                resolve({status:false})
             }
          })
     }
