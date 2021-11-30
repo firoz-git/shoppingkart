@@ -26,9 +26,12 @@ router.get('/signup',function(req,res){
 router.post('/signup', function(req,res){
   userHelpers.doSignup(req.body).then((response)=>{  //avidunn resolve cheythat ivde kittum ee resposeil
     console.log(response)
+    res.render("User/user-login")
   })
   })
 router.post('/login',function(req,res){
+  // console.log(req.body);
+  userHelpers.doLogin(req.body)
   
 })
 
