@@ -3,6 +3,7 @@ var collection=require("../config/collections")
 const promise=require('promise')
 const { response } = require('express')
 var objId= require('mongodb').ObjectID
+const { resolve, reject } = require('promise')
 
 module.exports={
     addProduct:(product,callback)=>{
@@ -33,6 +34,27 @@ module.exports={
             db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id:objId(prodId)}).then((response)=>{
                 resolve(response)
                
+            })
+        })
+    },
+    editProduct:(prodId)=>{
+        return new promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objId(prodId)}).then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+    updateProduct:(prodId,prodetails)=>{
+        return new promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objId(prodId)},{
+                $set:{
+                    name:prodetails.name,
+                    category:prodetails.category,
+                    price:prodetails.price,
+                    description:prodetails.description
+                }
+            }).then(()=>{
+                resolve()
             })
         })
     }
