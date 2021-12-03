@@ -8,7 +8,7 @@ const verifylogin=(req,res,next)=>{
   if(req.session.loggedIn){
     next()
   }else{
-    res.redirect('/') //it helps to reduve checking each route operations by just call this verifylogin
+    res.redirect('/login') //it helps to reduve checking each route operations by just call this verifylogin
   }
 }
 /* GET home page. */
@@ -67,12 +67,14 @@ router.get('/cart',verifylogin,(req,res)=>{
   res.render("User/cart")
 })
 
-router.get('/add-to-cart/:id',function(req,res){
+router.get('/add-to-cart/:id',verifylogin,function(req,res){
   // console.log(req.params.id) //productid same as in db
-  // console.log(req.session.user); //session created id
+  console.log(req.session.user._id); //session created id
   userHelpers.addCart(req.params.id,req.session.user._id).then((resolve)=>{
-    console.log(resolve);
+    // console.log(resolve);
     res.redirect('/')
   })
 })
+
+
 module.exports = router;
