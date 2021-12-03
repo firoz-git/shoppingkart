@@ -63,13 +63,19 @@ router.get('/logout', function(req,res){
   req.session.destroy()
   res.redirect('/')
 })
-router.get('/cart',verifylogin,(req,res)=>{
-  res.render("User/cart")
+router.get('/cart',verifylogin,async(req,res)=>{
+  let products=await userHelpers.getCartdata(req.session.user._id)
+    console.log(products);
+    res.render("User/cart",{products, user:req.session.user})
+
 })
+
+
 
 router.get('/add-to-cart/:id',verifylogin,function(req,res){
   // console.log(req.params.id) //productid same as in db
   console.log(req.session.user._id); //session created id
+  
   userHelpers.addCart(req.params.id,req.session.user._id).then((resolve)=>{
     // console.log(resolve);
     res.redirect('/')

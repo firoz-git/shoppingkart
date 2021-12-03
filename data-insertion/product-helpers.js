@@ -47,7 +47,7 @@ module.exports={
     updateProduct:(prodId,prodetails)=>{
         return new promise((resolve,reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objId(prodId)},{
-                $set:{
+                $set:{    //get inside of json data
                     name:prodetails.name,
                     category:prodetails.category,
                     price:prodetails.price,

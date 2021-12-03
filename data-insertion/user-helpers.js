@@ -3,6 +3,7 @@ var collection=require("../config/collections")
 const bcrypt=require('bcrypt')
 const { response } = require('express')
 var objId= require('mongodb').ObjectID
+const { reject } = require('promise')
 
 module.exports={
     doSignup:(userData)=>{
@@ -59,6 +60,32 @@ module.exports={
                 })
             }
         }) 
+    },
+    getCartdata:(sessionId)=>{
+        return new Promise(async(resolve,reject)=>{ // cart collectoinile product id s eduth product collectionil poy same id ulla productsine edukkanam eee oru process aggregate vechan cheyyunnath
+            let cartItems=await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match:{user:objId(sessionId)}
+                },
+                {
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        let:{prodList:'$product'},
+                        pipeline:[
+                            {
+                                $match:{
+                                    $expr:{
+                                        $in:['$_id','$$prodList']
+                                    }
+                                }
+                            }
+                        ],
+                        as:'cartItems'
+                    }
+                }
+            ]).toArray()
+            resolve(cartItems[0].cartItems)
+        })
     }
 }
 
