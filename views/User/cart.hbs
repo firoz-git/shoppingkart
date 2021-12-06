@@ -5,6 +5,7 @@
                 <tr>
                     <th scope="col">Item</th>
                     <th scope="col">Title</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
 
                 </tr>
@@ -15,17 +16,25 @@
                         {{#each this.product}}
                             <td><img style="width:70px;height:70px" src="/images/{{this._id}}.jpg" alt=""></td>
                             <td>{{this.name}}</td>
+                             <td>{{this.price}}</td>
+
                         {{/each}}
-                        <td><button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1)" >-</button>{{this.quantity}}<button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',1)">+</button></td>
-                        <td><a href="" class="btn btn-danger">Remove</a></td>
+                        <td><button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1)" >-</button>
+                        <span class="badge badge-success" id="{{this.item}}">{{this.quantity}}</span>
+                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',1)">+</button></td>
+                        <td><a href="" class="btn btn-danger" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1)">Remove</a></td>
                         </tr>
                 {{/each}}
 
-
+                
             </tbody>
         </table>
-    </div>
+        <hr>
+          <button type="button" class="btn btn-primary float-right mt-5">Place Order</button>
+          <button type="button" class="btn btn-secondary float-right mt-5 mr-4">Total:200000</button>
+
 </section>
+
 
 <script>
 

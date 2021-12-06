@@ -59,7 +59,7 @@ module.exports = {
         let prodExist = usercart.product.findIndex(
           (product) => product.item == prodId
         ); //product id ullathum (product.item) useril ninnulla podid match cheyyum appol same anenkil prodexist result varum athaan find index
-        console.log(prodExist); // matching true ayal 0 varum false anel -1
+        // console.log(prodExist); // matching true ayal 0 varum false anel -1
 
         if (prodExist != -1) {
           //zero ayaal that means copy vannal
@@ -81,7 +81,7 @@ module.exports = {
                 $push: { product: prodObj },
               }
             )
-            .then((response) => {
+            .then(() => {
               resolve();
             });
         }
@@ -94,7 +94,7 @@ module.exports = {
           .collection(collection.CART_COLLECTION)
           .insertOne(cartObj)
           .then((response) => {
-            resolve();
+            resolve(response);
           });
       }
     });
@@ -149,19 +149,35 @@ module.exports = {
     // console.log(result);
     let count = parseInt(result.count);
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CART_COLLECTION)
-        .updateOne(
-          { _id: objId(result.cart), "product.item": objId(result.product) }, //result cart is the same as the cart id refer to the cart.hbs quantity ajax
-
-          {
-            $inc: { "product.$.quantity": count }, // 1is the value of incriment (adding +1)
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          resolve(response);
-        });
+      if (result.count == -1 && result.quantity == 1) {
+        //quantity 1 ennit ount athava operation -1 cheyyan anenkil
+        db.get()
+          .collection(collection.CART_COLLECTION)
+          .updateOne(
+            { _id: objId(result.cart) },
+            {
+              $pull: { product: { item: objId(result.product) } },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            resolve({ removeProduct: true });
+          });
+      } else {
+        db.get()
+          .collection(collection.CART_COLLECTION)
+          .updateOne(
+            { _id: objId(result.cart), "product.item": objId(result.product) }, //result cart is the same as the cart id refer to the cart.hbs quantity ajax
+            //product objectinte akathan item so using "product.item"
+            {
+              $inc: { "product.$.quantity": count }, // 1is the value of incriment (adding +1 or -1)
+            }
+          )
+          .then((response) => {
+            // console.log(response);
+            resolve(true);
+          });
+      }
     });
   },
 };

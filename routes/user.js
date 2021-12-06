@@ -1,5 +1,6 @@
 const { response } = require("express");
 var express = require("express");
+const { helpers } = require("handlebars");
 const { resolve } = require("promise");
 const productHelpers = require("../data-insertion/product-helpers");
 const userHelpers = require("../data-insertion/user-helpers");
@@ -69,21 +70,21 @@ router.get("/cart", verifylogin, async (req, res) => {
   res.render("User/cart", { products, user: req.session.user });
 });
 
-router.get("/add-to-cart/:id", verifylogin, function (req, res) {
+router.get('/add-to-cart/:id',(req,res)=>{
   // console.log(req.params.id)                                               //productid same as in db
   // console.log(req.session.user._id);                                   //session created id
   // console.log("it worked"); //checking for ajax working
-  userHelpers.addCart(req.params.id, req.session.user._id).then((resolve) => {
+  userHelpers.addCart(req.params.id,req.session.user._id).then(()=>{
     // console.log(resolve);
     // res.redirect('/')                                                  //after using ajax there is no need to redirect beaause ajax help to restart only the portion not the whole page
-    res.json({ status: true }); // it helps the if checking of ajax js
+    res.json({status:true}) // it helps the if checking of ajax js
   });
 });
 
 router.post("/change-Prod-Quantity", function (req, res, next) {
-  userHelpers.changeProdQuantity(req.body).then(() => {
+  userHelpers.changeProdQuantity(req.body).then((response) => {
     // console.log(req.body);
-    res.json({ status: true });
+    res.json(response)
   });
 });
 
