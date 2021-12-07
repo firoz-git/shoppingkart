@@ -70,22 +70,21 @@ router.get("/cart", verifylogin, async (req, res) => {
   res.render("User/cart", { products, user: req.session.user });
 });
 
-router.get('/add-to-cart/:id',(req,res)=>{
-  // console.log(req.params.id)                                               //productid same as in db
-  // console.log(req.session.user._id);                                   //session created id
-  // console.log("it worked"); //checking for ajax working
-  userHelpers.addCart(req.params.id,req.session.user._id).then(()=>{
-    // console.log(resolve);
-    // res.redirect('/')                                                  //after using ajax there is no need to redirect beaause ajax help to restart only the portion not the whole page
-    res.json({status:true}) // it helps the if checking of ajax js
+router.get("/add-to-cart/:id", (req, res) => {
+  //checking for ajax working
+  userHelpers.addCart(req.params.id, req.session.user._id).then(() => {
+    //after using ajax there is no need to redirect beaause ajax help to restart only the portion not the whole page
+    res.json({ status: true }); // it helps the if checking of ajax js
   });
 });
 
 router.post("/change-Prod-Quantity", function (req, res, next) {
   userHelpers.changeProdQuantity(req.body).then((response) => {
-    // console.log(req.body);
-    res.json(response)
+    res.json(response);
   });
+});
+router.get("/place-order", (req, res) => {
+  res.render("User/place-order");
 });
 
 module.exports = router;
