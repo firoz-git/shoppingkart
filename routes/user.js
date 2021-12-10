@@ -96,7 +96,7 @@ router.post("/change-Prod-Quantity", function (req, res, next) {
 router.get("/place-order/:id", (req, res) => {
   console.log(req.params.id);
   let price=req.params.id;
-  res.render('User/place-order',{price})
+  res.render('User/place-order',{price,user:req.session.user})
 });
 
 module.exports = router;
