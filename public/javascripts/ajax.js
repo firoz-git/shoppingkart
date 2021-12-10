@@ -26,6 +26,7 @@ function changeQuantity(cartId, prodId, count) {
   $.ajax({
     url: "/change-Prod-Quantity", //link
     data: {
+      
       cart: cartId, //post sending data //cartid and userid are unique one user get one cart id another user get another cart id so we can verify either cart or user id
       product: prodId,
       count: count,

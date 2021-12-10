@@ -13,29 +13,25 @@
             <tbody>
                 {{#each products}}
                     <tr>
-                        {{#each this.product}}
-                            <td><img style="width:70px;height:70px" src="/images/{{this._id}}.jpg" alt=""></td>
-                            <td>{{this.name}}</td>
-                             <td>{{this.price}}</td>
 
-                        {{/each}}
+                        <td><img style="width:70px;height:70px" src="/images/{{this.product._id}}.jpg" alt=""></td>
+                        <td>{{this.product.name}}</td>
+                        <td>{{this.product.price}}</td>
                         <td><button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1)" >-</button>
                         <span class="badge badge-success" id="{{this.item}}">{{this.quantity}}</span>
-                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',1)">+</button></td>
-                        <td><a href="" class="btn btn-danger" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1)">Remove</a></td>
-                        </tr>
+                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.item}}',1,{{this.product.price}})">+</button></td>
+                        <td><a href="" class="btn btn-danger" onclick="changeQuantity('{{this._id}}','{{this.item}}',-1,-{{this.product.price}})">Remove</a></td>
+                    </tr>
                 {{/each}}
 
                 
             </tbody>
         </table>
         <hr>
-          <a href="/place-order" type="button" class="btn btn-primary float-right mt-5">Place Order</a>
-          <button type="button" class="btn btn-secondary float-right mt-5 mr-4">Total:200000</button>
+          <a href="/place-order/{{amount}}" type="button" class="btn btn-primary float-right mt-2">Place Order</a>
+        <h3>Total :
+            <span  id="total">{{amount}}</span>  
+        </h3>  <!--26,27-->
 
 </section>
 
-
-<script>
-
-</script>

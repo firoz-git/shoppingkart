@@ -125,7 +125,11 @@ module.exports = {
               foreignField: "_id",
               as: "product",
             },
-          },
+          },{
+            $project: {
+              item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+          }
+          }
         ])
         .toArray();
       resolve(cartItems); //it gives only the product id and quantity
@@ -146,7 +150,7 @@ module.exports = {
   },
 
   changeProdQuantity: (result) => {
-    // console.log(result);
+
     let count = parseInt(result.count);
     return new Promise((resolve, reject) => {
       if (result.count == -1 && result.quantity == 1) {

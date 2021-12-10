@@ -66,8 +66,16 @@ router.get("/logout", function (req, res) {
 });
 router.get("/cart", verifylogin, async (req, res) => {
   let products = await userHelpers.getCartdata(req.session.user._id);
-  console.log(products);
-  res.render("User/cart", { products, user: req.session.user });
+  console.log(products.length);
+  let amount=0
+  for(let i=0;i<products.length;i++){
+    // console.log(products[i].product.price)
+    let total=(products[i].product.price*products[i].quantity)
+    // console.log(total);
+    amount=amount+total;
+  }
+  console.log(amount);
+  res.render("User/cart", { products,amount, user: req.session.user });
 });
 
 router.get("/add-to-cart/:id", (req, res) => {
@@ -79,12 +87,16 @@ router.get("/add-to-cart/:id", (req, res) => {
 });
 
 router.post("/change-Prod-Quantity", function (req, res, next) {
-  userHelpers.changeProdQuantity(req.body).then((response) => {
-    res.json(response);
+  console.log(req.body);
+  userHelpers.changeProdQuantity(req.body).then((result) => {
+
+    res.json(result);
   });
 });
-router.get("/place-order", (req, res) => {
-  res.render("User/place-order");
+router.get("/place-order/:id", (req, res) => {
+  console.log(req.params.id);
+  let price=req.params.id;
+  res.render('User/place-order',{price})
 });
 
 module.exports = router;
