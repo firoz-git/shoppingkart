@@ -1,29 +1,26 @@
-
-  
 function addToCart(proId) {
   $.ajax({
-       url: '/add-to-cart/' + proId,
-       method: 'get',
-       success: (response) => {
-           if (response.status) {
-               let count = $('#cart-count').html()
-               count = parseInt(count) + 1
-               $("#cart-count").html(count);
-               
-               //$(".addtocart-button").html("Added"); 
-           }
-           
-       }
-   })
-   
+    url: "/add-to-cart/" + proId,
+    method: "get",
+    success: (response) => {
+      if (response.status) {
+        let count = $("#cart-count").html();
+        count = parseInt(count) + 1;
+        $("#cart-count").html(count);
+
+        //$(".addtocart-button").html("Added");
+      }
+    },
+  });
 }
 
 //this page is connected with the layout and the layout is connected to the whole hbs files
 
-function changeQuantity(cartId, prodId, count,priceData) {
+function changeQuantity(cartId, prodId, count, priceData) {
   let quantity = parseInt(document.getElementById(prodId).innerHTML); //this.quantity taken by document.getelementbyid ivde id ennath pordid aan koduthath so aaa id ulla tag inte inner html value edukkum
-  let amount=parseInt(document.getElementById('total').innerHTML)
+  let amount = parseInt(document.getElementById("total").innerHTML);
   count = parseInt(count);
+
   priceData = parseInt(priceData);
   $.ajax({
     url: "/change-Prod-Quantity", //link
@@ -40,7 +37,7 @@ function changeQuantity(cartId, prodId, count,priceData) {
         location.reload();
       } else {
         document.getElementById(prodId).innerHTML = quantity + count;
-        document.getElementById('total').innerHTML = amount + priceData;
+        document.getElementById("total").innerHTML = amount + priceData;
       }
     },
   });
