@@ -184,25 +184,48 @@ module.exports = {
       }
     });
   },
+  totalPrice:(userId)=>{
+    return new Promise(async (resolve, reject) => {
+      let total  = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .aggregate([
+          {
+            $match: { user: objId(userId) },
+          },
+          {
+            $unwind: "$product",
+          },
+          {
+            $project: {
+              item: "$product.item",
+              quantity: "$product.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },{
+            $project: {
+              item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+          }
+          },
+          {
+            $group:{
+              _id:null,
+              total:{$sum:{$multiply:['$quantity',{$convert:{input:'$product.price',to:'int'}}]}}
+            }
+          }
+        ])
+        .toArray();
+        console.log(total[0].total); 
+      resolve(total[0].total);
+    });
+    
+  }
 };
 
-// module.exports={
-//     doSignup:(userData,callback)=>{
-//         userData.password=bcrypt.hash(userData.password,10)
-//         db.get().collection(collection.USER_COLLECTION).insertOne(userData,(error,res)=>{
-//             if(error){
-//                 console.log(error);
-//             }else{
-//                 db.get().collection(collection.USER_COLLECTION).findOne(userData,(error,res)=>{
-//                     if(error){
-//                         console.log(error);
-//                     }else{
-//                         callback(res._id)
-//                     }
-//                 })
-
-//             }
-//         }
-//         )
-//     },
-// }

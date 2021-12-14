@@ -88,11 +88,11 @@ router.post("/change-Prod-Quantity", function (req, res, next) {
     res.json(result);
   });
 });
-router.get("/place-order",(req, res) => {
+router.get("/place-order",async(req, res) => {
+  let total=await userHelpers.totalPrice(req.session.user._id)
+  // console.log(total);
 
-
-
-//   res.render('User/place-order',{price,user:req.session.user})
+  res.render('User/place-order',{total,user:req.session.user})
  });
 
 module.exports = router;
