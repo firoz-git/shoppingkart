@@ -226,6 +226,12 @@ module.exports = {
       resolve(total[0].total);
     });
     
+  },
+  placeOrders:(orderData)=>{
+    return new Promise((resolve, reject) => {
+      
+    })
+    
   }
 };
 

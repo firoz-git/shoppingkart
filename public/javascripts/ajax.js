@@ -42,3 +42,14 @@ function changeQuantity(cartId, prodId, count, priceData) {
     },
   });
 }
+$('#checkout').submit((e)=>{   //order placing (COD/ONLINE)
+    e.preventDefault()
+    $.ajax({
+      url:'/checkout',
+      method:'post',
+      data:$('#checkout').serialize(),   //it send whole data
+      success:(response)=>{
+        alert(response)
+      }
+    })
+  })

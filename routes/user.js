@@ -94,7 +94,9 @@ router.get("/place-order",verifylogin, async(req, res) => {
 
   res.render('User/place-order',{total,user:req.session.user})
  });
-router.post('/check',verifylogin,(req,res)=>{
-  console.log(req.body);
+router.post('/checkout',verifylogin,(req,res)=>{
+  userHelpers.placeOrders(req.body).then((response)=>{
+
+  })
 })
 module.exports = router;

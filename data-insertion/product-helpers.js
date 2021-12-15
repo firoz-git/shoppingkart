@@ -23,7 +23,7 @@ module.exports={
         }
         )
     },
-    getAllProduct:()=>{
+        getAllProduct:()=>{
         return new promise(async(resolve,reject)=>{
             let products=await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()//array ayan data get cheyyumbol kittunnath
             resolve(products)
